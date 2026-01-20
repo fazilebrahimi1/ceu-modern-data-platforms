@@ -38,7 +38,7 @@ Go through the [dbt setup app](https://dbtsetup.nordquant.com/?course=ceu) again
 > Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 > ```
 > 
-> then restart PowerShell and retry `uv sync` / activating the virtualenv.
+> then restart Visual Studio Code and retry `uv sync` / activating the virtualenv.
 
 > **Note (Windows PowerShell):** If you see a "command not found" error
 > 
