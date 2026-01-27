@@ -7,10 +7,10 @@ Data Engineering 2 - Modern Data Platforms: dbt, Snowflake, Databricks, Apache S
 ## Installation
 
 1. **Databricks:** Sign up for Databricks Free Edition: https://www.databricks.com/learn/free-edition
-2. **Snowflake:** Register to Snowflake: https://signup.snowflake.com/?trial=student&cloud=aws&region=us-west-2
+2. **Snowflake:** Register for Snowflake: https://signup.snowflake.com/?trial=student&cloud=aws&region=us-west-2
 3. **Snowflake:** Set up Snowflake tables: https://dbtsetup.nordquant.com/?course=ceu
 4. **dbt:** Fork this repo as a private repository and clone it to your PC
-5. **dbt:** Ensure you have a compatible Python Version: https://docs.getdbt.com/faqs/Core/install-python-compatibility (if you don't, install Python 3.13)
+5. **dbt:** Ensure you have a compatible Python version: https://docs.getdbt.com/faqs/Core/install-python-compatibility (if you don't, install Python 3.13)
 6. **dbt:** Install uv: https://docs.astral.sh/uv/getting-started/installation/
 7. **dbt:** Install packages: `uv sync`
 8. **dbt:** Activate the virtualenv:
@@ -28,7 +28,7 @@ Create a dbt project (all platforms):
 dbt init --skip-profile-setup airbnb
 ```
 
-Once done, drag and drop the `profiles.yml` file you downloaded to the `airbnb` folder.
+Once done, drag and drop the `profiles.yml` file you downloaded into the `airbnb` folder.
 
 Test if dbt works:
 ```sh
@@ -59,7 +59,7 @@ Execute these queries in Snowflake:
 
 ### Exercise 1: Explore the Data
 
-1. Take a look at the AIRBNB database/schemas/tables (you can use the Snowflake UI for this).
+1. Take a look at the AIRBNB database, schemas, and tables (you can use the Snowflake UI for this).
 2. Select 10 records from listings - review and understand the data.
 3. Select 10 records from hosts - review and understand the data.
 4. Select 10 records from reviews - review and understand the data.
@@ -528,11 +528,11 @@ l AS (
 
 ## Seeds
 
-Sometimes you have smaller datasets that are not added to Snowflake by external systems and you want to add them manually. Seeds are here to the rescue:
+Sometimes you have smaller datasets that are not added to Snowflake by external systems and you want to add them manually. This is where seeds come in handy:
 
 1. Explore the `seed` folder.
 2. Run `dbt seeds`.
-3. Check for the table on the Snowflake UI.
+3. Check for the table in the Snowflake UI.
 
 ### Exercise 9: Full Moon Reviews Mart
 
@@ -701,7 +701,7 @@ dbt build
 2. Run it.
 3. Update `raw_hosts`.
 4. Run snapshot again.
-5. Validate the change in the snapshot.
+5. Validate the change in the snapshot..
 <details>
 <summary>Solution</summary>
 
@@ -798,7 +798,7 @@ dbt test -s mart_fullmoon_reviews
 ```
 
 ### Setting Severity
-Let's test if the sentiment is not null in our sources, but we don't want the test to fail the whole test workflow, only to give a warning.
+Let's test if the sentiment is not null in our sources. We don't want the test to fail the whole test workflow, only to give a warning.
 
 Add the sentiment column definition to `models/sources.yml`:
 ```
@@ -814,7 +814,7 @@ sources:
         identifier: raw_reviews
         columns:
           - name: sentiment
-            tests:
+            data_tests:
               - not_null:
                   config:
                     severity: warn
@@ -836,7 +836,7 @@ data_tests:
 ```
 
 ### Taking Testing in Production
-Here is the link to [Elementary Data](https://www.elementary-data.com/) if you want to take testing to the next level.
+Here is a link to [Elementary Data](https://www.elementary-data.com/) if you want to take testing to the next level.
 
 ### Exercise 12: Generic Tests for dim_hosts_cleansed
 
@@ -876,7 +876,7 @@ Add this to `models/schema.yml`:
 
 ### Exercise 13: Singular Test for Consistent Created Dates
 
-Create a singular test in `tests/consistent_created_at.sql` that checks that there is no review date that is submitted before its listing was created.
+Create a singular test in `tests/consistent_created_at.sql` that verifies no review was submitted before its listing was created.
 
 Make sure that every `review_date` in `fct_reviews` is more recent than the associated `created_at` in `dim_listings_cleansed`.
 
@@ -901,7 +901,7 @@ WHERE l.created_at > r.review_date
 
 ### Exercise 14: Setting Test Severity to Warn
 
-Historically, review and listing date mismatch is a known data quality issue that we want to monitor but not block our pipeline, configure this test to emit a **warning** instead of an **error**.
+Historically, the review and listing date mismatch is a known data quality issue that we want to monitor but not block our pipeline. Configure this test to emit a **warning** instead of an **error**.
 
 Add a config block to the test file (`tests/consistent_created_at.sql`):
 
@@ -1149,3 +1149,10 @@ Update `models/schema.yml` under `dim_hosts_cleansed`:
 ```
 
 </details>
+
+---
+
+## What to Do When Things Go Wrong?
+
+1. Try to rebuild everything by executing `dbt build`
+2. In rare cases, when dbt encounters some internal inconsistencies, running `dbt clean` and then `dbt build` might work.
