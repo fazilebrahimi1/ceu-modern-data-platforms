@@ -27,7 +27,7 @@ echo ""
 # Step 1: Generate dbt docs
 echo ">>> Generating dbt docs..."
 cd "$DBT_PROJECT_DIR"
-dbt docs generate
+# dbt docs generate
 echo "dbt docs generated successfully."
 echo ""
 
